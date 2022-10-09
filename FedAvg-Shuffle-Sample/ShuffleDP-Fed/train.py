@@ -85,20 +85,16 @@ if __name__=="__main__":
 
     net = net.to(dev)
 
-    # 直接使用torch.nn中内置的损失函数F
     loss_func = F.cross_entropy
 
-    # 实现梯度下降算法
     opti = optim.SGD(net.parameters(), lr=args['learning_rate'],momentum=0.9,weight_decay=5e-4)
-    # opti_drease=torch.optim.lr_scheduler.ExponentialLR(opti,0.98,-1)
 
     myClients = ClientsGroup(dataset_name, args['IID'], args['num_of_clients'], dev)
     testDataLoader = myClients.test_data_loader
 
-    # 至少每轮选取一个来训练
     num_in_comm = int(max(args['num_of_clients'] * args['cfraction'], 1))
 
-    #绘图用的xy轴，分别表示轮数和精确度
+    #xy axis for plotting, indicating number of rounds and accuracy respectively
     x_numcom=[]
     y_accuracy=[]
     Z_sample=[]
@@ -109,15 +105,15 @@ if __name__=="__main__":
         x_numcom.append(i+1)
 
 
-    global_parameter = {}      #定义一个全局变量为元组形式
-    for key, var in net.state_dict().items():   #全局变量初始化
+    global_parameter = {}
+    for key, var in net.state_dict().items():
         global_parameter[key] = var.clone()
 
-    for i in range(args['num_comm']):   #开始循环训练的轮数
+    for i in range(args['num_comm']):
         print("communicate round {}".format(i+1))
 
-        order = np.random.permutation(args['num_of_clients'])   #对用户进行随机排序
-        clients_in_comm = ['client{}'.format(i) for i in order[0:num_in_comm]]    #赋值字符串client{i}
+        order = np.random.permutation(args['num_of_clients'])
+        clients_in_comm = ['client{}'.format(i) for i in order[0:num_in_comm]]
 
         local_parameters=[]
         init_parameter = None
@@ -171,7 +167,5 @@ if __name__=="__main__":
 
 
         if (i+1)==args['num_comm']:
-            # draw_plot(x_numcom,y_accuracy,args['model_name'],
-            #            i+1,args['epoch'],args['batchsize'],args['learning_rate'],
-            #            args['num_of_clients'],args['sample_rate'],args['epsilon'],args['thr rule'])
+            # save accuracy to local
             save_accuracy(x_numcom,y_accuracy,Z_sample,L_sample,Time,(i+1),args['sample_rate'],args['epsilon'],args['thr rule'])

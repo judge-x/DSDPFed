@@ -1,0 +1,1 @@
+Here is all the information about the gradients during some of the experiments.

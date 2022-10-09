@@ -1,7 +1,7 @@
 import random
 def shuffle(local_parameters):
     '''
-        shuffle扰乱算法
+        shuffle scrambling algorithm
     '''
     local_parameters=local_parameters
     r = random.random

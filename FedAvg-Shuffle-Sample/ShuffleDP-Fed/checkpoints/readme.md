@@ -1,1 +1,1 @@
-用来存放每一次训练好的模型，可以直接torch导入使用
+Used to store trained models

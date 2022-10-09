@@ -45,7 +45,7 @@ def getSigma_up(eplison,delta,m,T,N,dp_rate):
 
 def get_norm(X,model_name):
     '''
-        获取每一个梯度的二范数
+        Get the two-parametric number of each gradient
     '''
     Net=tp_net(model_name)
     Net.net.load_state_dict(X, strict=True)
@@ -63,6 +63,9 @@ def get_norm(X,model_name):
 
 
 def guidance_clip(guidance,model_name,C):
+    '''
+        guidance_clip
+    '''
     Net = tp_net(model_name)
     Net.net.load_state_dict(guidance, strict=True)
     torch.nn.utils.clip_grad_norm_(Net.net.parameters(),C,2.0)
@@ -72,7 +75,7 @@ def guidance_clip(guidance,model_name,C):
 
 def evaluate_acc_mnist(net, dev ,lossFun, global_parameter, testDataLoader):
     '''
-        测试精度
+        Test accuracy for mnist
     '''
     net.load_state_dict(global_parameter, strict=True)  # 将新的模型加载
     sum_accu = 0
@@ -91,7 +94,10 @@ def evaluate_acc_mnist(net, dev ,lossFun, global_parameter, testDataLoader):
     return sum_accu / num, loss / num
 
 def evaluate_acc_cifar(net, dev ,lossFun, global_parameter, testDataLoader):
-    net.load_state_dict(global_parameter, strict=True)  # 将新的模型加载
+    '''
+        Test accuracy for cifar
+    '''
+    net.load_state_dict(global_parameter, strict=True)
     sum_accu = 0
     num = 0
     loss = 0
@@ -109,14 +115,14 @@ def evaluate_acc_cifar(net, dev ,lossFun, global_parameter, testDataLoader):
 
 def sava_model(net,save_path,model_name,num_comm,epoch,batchsize,learning_rate,num_of_clients,sample_rate,dp_rate):
     '''
-        保存训练好的模型
+        Save the trained model
     '''
     torch.save(net, os.path.join(save_path,'{}_num_comm{}_E{}_B{}_lr{}_num_clients{}_spl{}_dprt{}'.format(model_name,num_comm, epoch,batchsize,learning_rate,num_of_clients,sample_rate,dp_rate)))
 
 
 def draw_plot(x,y,model_name,num_comm,epoch,batchsize,learning_rate,num_of_clients,sample_rate,eplison,c):
     '''
-        画折线图
+        Draw line graphs
     '''
     plt.title('{}_accuracy'.format(model_name))
     plt.plot(x, y, c='green')

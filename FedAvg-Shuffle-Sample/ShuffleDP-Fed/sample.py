@@ -4,7 +4,7 @@ from utils import *
 
 def sample_select(local_guidances,rate,model_name,c):
     '''
-        梯度抽样
+        Gradient Sampling
     '''
     sample_num=int(rate*len(local_guidances))
     sample_guidances=random.sample(local_guidances,sample_num)
@@ -21,7 +21,7 @@ def sample_select(local_guidances,rate,model_name,c):
 
 def get_thr(sample_guidances,k,model_name):
     '''
-        返回抽样的阈值
+        Return the threshold value for sampling
     '''
     list=[]
     for x in sample_guidances:
@@ -31,7 +31,7 @@ def get_thr(sample_guidances,k,model_name):
 
 def select_guidances(local_guidances,thr,model_name):
     '''
-        采样梯度
+        Sampling gradient
     '''
     selected_guidances=[]
     for x in local_guidances:

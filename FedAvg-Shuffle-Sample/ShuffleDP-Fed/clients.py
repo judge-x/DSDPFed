@@ -16,7 +16,7 @@ class client(object):
 
     def localUpdate(self, dataset_name,localEpoch, localBatchSize,model_name, Net, lossFun, opti, global_parameters,dp,epsilon,delta,drs,dr):
 
-        # 根据全局变量导入模型
+        # Importing models based on global variables
         Net.load_state_dict(global_parameters, strict=True)
         C=1  #max_norm
         self.train_dl = DataLoader(self.train_ds, batch_size=localBatchSize, shuffle=True)
@@ -25,23 +25,16 @@ class client(object):
             for data, label in self.train_dl:
                 data, label = data.to(self.dev), label.to(self.dev)
 
-                # 通过一次网络输出
                 preds =Net(data)
 
-                # 计算得到损失
                 loss = lossFun(preds, label)
 
-                #裁切
                 torch.nn.utils.clip_grad_norm_(Net.parameters(), C, 5.0)
 
-                # 反向传播
                 loss.backward()
 
-
-                # 更新参数梯度
                 optimizer.step()
 
-                # 参数梯度清理
                 optimizer.zero_grad()
 
         local_guidance=Net.state_dict()
@@ -50,12 +43,11 @@ class client(object):
         for key, var in local_guidance.items():
 
             local_guidance[key] = var.cuda() - global_parameters[key].cuda()
-        # local_guidance = guidance_clip(local_guidance, model_name, C)
 
         if dp==1 and drs==0:
-            #动态rate
+            #Dynamic rate
             dp_rate=1-1/(1+math.exp(-1*float(get_norm(local_guidance,model_name))/float(get_norm(global_parameters,model_name))))
-            #选择添加高斯噪声，如果满足开关等于1且dp_rate概率被抽中，则添加高斯差分隐私
+            #Choose to add Gaussian noise and add Gaussian differential privacy if the switch is equal to 1 and the dp_rate probability is sampled
             if np.random.choice([0,1],p=[(1-dp_rate),dp_rate])==1:
                 sigma=getSigma(epsilon,delta,C,len(self.train_ds))
                 for key,var in enumerate(local_guidance):
@@ -73,7 +65,7 @@ class client(object):
 
 
 
-class ClientsGroup(object):     #定义了一个客户端组
+class ClientsGroup(object):
     def __init__(self, dataSetName, isIID, numOfClients, dev):
         self.data_set_name = dataSetName
         self.is_iid = isIID
@@ -81,29 +73,29 @@ class ClientsGroup(object):     #定义了一个客户端组
         self.dev = dev
         self.clients_set = {}
         self.test_data_loader = None
-        self.dataSetBalanceAllocation()     #本地数据集预处理
+        self.dataSetBalanceAllocation()
 
     def dataSetBalanceAllocation(self):
         if self.data_set_name=='mnist':
-            mnistDataSet = GetDataSet(self.data_set_name, self.is_iid)      #获取数据
+            mnistDataSet = GetDataSet(self.data_set_name, self.is_iid)
 
-            test_data = torch.tensor(mnistDataSet.test_data)    #测试数据展开为张量
-            test_label = torch.argmax(torch.tensor(mnistDataSet.test_label), dim=1)     #返回一维上的最大值
+            test_data = torch.tensor(mnistDataSet.test_data)
+            test_label = torch.argmax(torch.tensor(mnistDataSet.test_label), dim=1)
             self.test_data_loader = DataLoader(TensorDataset( test_data, test_label), batch_size=100, shuffle=False)
 
-            train_data = mnistDataSet.train_data    #训练集初始化
+            train_data = mnistDataSet.train_data
             train_label = mnistDataSet.train_label
 
-            shard_size = mnistDataSet.train_data_size // self.num_of_clients // 2   #将数据切块
+            shard_size = mnistDataSet.train_data_size // self.num_of_clients // 2
             shards_id = np.random.permutation(mnistDataSet.train_data_size // shard_size)
-            for i in range(self.num_of_clients):    #每两个一轮训练
+            for i in range(self.num_of_clients):
                 shards_id1 = shards_id[i * 2]
                 shards_id2 = shards_id[i * 2 + 1]
                 data_shards1 = train_data[shards_id1 * shard_size: shards_id1 * shard_size + shard_size]
                 data_shards2 = train_data[shards_id2 * shard_size: shards_id2 * shard_size + shard_size]
                 label_shards1 = train_label[shards_id1 * shard_size: shards_id1 * shard_size + shard_size]
                 label_shards2 = train_label[shards_id2 * shard_size: shards_id2 * shard_size + shard_size]
-                local_data, local_label = np.vstack((data_shards1, data_shards2)), np.vstack((label_shards1, label_shards2))    #将两个数据拼接
+                local_data, local_label = np.vstack((data_shards1, data_shards2)), np.vstack((label_shards1, label_shards2))
                 local_label = np.argmax(local_label, axis=1)
                 someone = client(TensorDataset(torch.tensor(local_data), torch.tensor(local_label)), self.dev)
                 self.clients_set['client{}'.format(i)] = someone
