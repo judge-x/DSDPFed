@@ -71,14 +71,13 @@ class GetDataSet(object):
     def cifarDataSetConstruct(self):
         trans_cifar = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
-        transform_train = transform.Compose([  # 数据增强操作，训练集的预处理
-            transform.RandomCrop(32, padding=4),  # 随机剪裁，大小为32*32，添加4个像素的填充内容
-            transform.RandomHorizontalFlip(),  # 随机垂直方向的翻转
+        transform_train = transform.Compose([ 
+            transform.RandomCrop(32, padding=4), 
+            transform.RandomHorizontalFlip(), 
             transform.ToTensor(),
-            transform.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))  # 归一化操作，数值是抽样得到的，无需考虑太
-            # 多，分别是均值和标准差
+            transform.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)) 
         ])
-        transform_test = transform.Compose([  # 对测试集进行预处理
+        transform_test = transform.Compose([
             transform.ToTensor(),
             transform.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
         ])
