@@ -1,6 +1,11 @@
-# FedAvg-Shuffle-
+# DSDPFed
 
 ### environment
+
+conda create -n ***
+
+pip install -r requirements.txt
+
 ##### PyTorch-version
 
 1.python3.7.6
