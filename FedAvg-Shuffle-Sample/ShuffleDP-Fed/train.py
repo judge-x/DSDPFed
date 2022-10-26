@@ -12,7 +12,6 @@ from shuffler import shuffle
 from server import update
 from utils import *
 from sample import sample_select
-from sample_former import  sample_select_former
 import time
 
 
