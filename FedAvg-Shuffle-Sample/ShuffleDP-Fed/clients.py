@@ -1,7 +1,7 @@
 import torch.nn.utils
 from torch.utils.data import TensorDataset
 from torch.utils.data import DataLoader,Dataset,Subset
-from getData import GetDataSet
+from get_Data import GetDataSet
 from utils import *
 from sample import *
 from gaussian_Mechanism import GaussianMechanism
