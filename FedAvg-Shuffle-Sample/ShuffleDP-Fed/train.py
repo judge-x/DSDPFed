@@ -6,7 +6,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 from torch import optim
-from Models import *
+from models import *
 from clients import ClientsGroup
 from shuffler import shuffle
 from server import update
