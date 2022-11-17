@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader, Dataset
 import math
 from matplotlib import pyplot as plt
 import pandas as pd
-from Models import *
+from models import *
 from net_temp import tp_net
 import torch.nn.functional as F
 
