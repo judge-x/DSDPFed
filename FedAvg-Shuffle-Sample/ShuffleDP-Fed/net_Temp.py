@@ -1,4 +1,4 @@
-from Models import *
+from models import *
 
 class tp_net(object):
     def __init__(self,model_name):
