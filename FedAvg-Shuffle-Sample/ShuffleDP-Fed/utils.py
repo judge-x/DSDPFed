@@ -7,7 +7,7 @@ import math
 from matplotlib import pyplot as plt
 import pandas as pd
 from models import *
-from net_temp import tp_net
+from net_Temp import tp_net
 import torch.nn.functional as F
 
 class DatasetSplit(Dataset):
