@@ -29,7 +29,7 @@ class client(object):
 
                 loss = lossFun(preds, label)
 
-                torch.nn.utils.clip_grad_norm_(Net.parameters(), C, 5.0)
+                torch.nn.utils.clip_grad_norm_(Net.parameters(), C, 2)
 
                 loss.backward()
 
