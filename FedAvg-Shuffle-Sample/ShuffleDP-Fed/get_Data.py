@@ -26,15 +26,23 @@ class GetDataSet(object):
 
 
     def mnistDataSetConstruct(self, isIID):
-        data_dir = r'.\data'   #for windows
-        # data_dir = r'./data'     #for linux
+        # data_dir = r'.\data'   #for windows
+        data_dir = r'./data'     #for linux
         trans_mnist = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])
         datasets.MNIST(data_dir, train=True, download=True, transform=trans_mnist)
         datasets.MNIST(data_dir, train=False, download=True, transform=trans_mnist)
-        train_images_path = os.path.join(data_dir, r'MNIST\raw\train-images-idx3-ubyte.gz')
-        train_labels_path = os.path.join(data_dir, r'MNIST\raw\train-labels-idx1-ubyte.gz')
-        test_images_path = os.path.join(data_dir, r'MNIST\raw\t10k-images-idx3-ubyte.gz')
-        test_labels_path = os.path.join(data_dir, r'MNIST\raw\t10k-labels-idx1-ubyte.gz')
+        #for win
+        # train_images_path = os.path.join(data_dir, r'MNIST\raw\train-images-idx3-ubyte.gz')
+        # train_labels_path = os.path.join(data_dir, r'MNIST\raw\train-labels-idx1-ubyte.gz')
+        # test_images_path = os.path.join(data_dir, r'MNIST\raw\t10k-images-idx3-ubyte.gz')
+        # test_labels_path = os.path.join(data_dir, r'MNIST\raw\t10k-labels-idx1-ubyte.gz')
+
+        #for linux
+        train_images_path = os.path.join(data_dir, r'MNIST/raw/train-images-idx3-ubyte.gz')
+        train_labels_path = os.path.join(data_dir, r'MNIST/raw/train-labels-idx1-ubyte.gz')
+        test_images_path = os.path.join(data_dir, r'MNIST/raw/t10k-images-idx3-ubyte.gz')
+        test_labels_path = os.path.join(data_dir, r'MNIST/raw/t10k-labels-idx1-ubyte.gz')
+
         train_images = extract_images(train_images_path)
         train_labels = extract_labels(train_labels_path)
         test_images = extract_images(test_images_path)
