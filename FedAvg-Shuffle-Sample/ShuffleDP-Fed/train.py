@@ -34,13 +34,13 @@ parser.add_argument('-iid', '--IID', type=int, default=0, help='the way to alloc
 
 #guidance sparse
 parser.add_argument('-spr', '--sample_rate', type=float, default=.6, help='the sample rate')
-parser.add_argument('-c', '--thr rule', type=float, default=.2, help='the rule of value-sorted client')
+parser.add_argument('-c', '--thr rule', type=float, default=.5, help='the rule of value-sorted client')
 
 
 #privacy
 parser.add_argument('-dp', '--dp_switch', type=int, default=1, help='the dp run or not')
 parser.add_argument('-ep', '--epsilon', type=float, default=1, help='the privacy burget')
-parser.add_argument('-de', '--delta', type=float, default=0.01, help='the slack')
+parser.add_argument('-de', '--delta', type=float, default=0.001, help='the slack')
 parser.add_argument('-drs','--dp_rt_switch',type=int,default=0,help='input dp_rt or not')
 parser.add_argument('-dp_rt', '--dp_rate', type=float, default=0.6, help='the probability of differential rateS')
 
