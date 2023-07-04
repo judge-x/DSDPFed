@@ -22,12 +22,12 @@ And cifar dataset will be download automaticly.
 
 Run the code
 
-with mnist 
+with mnist for DSDPFed
 ```asp
-python train.py -nc 100 -cf 0.5 -E 5 -B 10 -mn mnist_cnn  -ncomm 50 -iid 0 -lr 0.01 -vf 1  -g 0 -dp 0
+python train.py -nc 100 -cf 0.5 -E 5 -B 10 -mn mnist_cnn  -ncomm 50 -iid 0 -lr 0.01 -vf 1  -g 0 -dp 1 -drs 0 -spr 0.6 -c 0.5
 ```
 
-or with cifar
+or with cifar For full DP
 ```asp
 python train.py -nc 100 -cf 0.5 -E 5 -B 10 -mn cifar_cnn  -ncomm 100 -iid 1 -lr 0.01 -vf 1  -g 0 -dp 1 -drs 1 -dp_rt 1 -ep 1
 ```
