@@ -1,7 +1,5 @@
 # Anonymizing Public Transportation Rides Information
 
-##### Submitted by: Yiftach Sabag
-
 ## Usage
 
 run `$ python3 main.py` from root directory of the project, with optional flags.
